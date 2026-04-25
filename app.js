@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+const http = require('http');
 var app = express();
 
 app.use(logger('dev'));
@@ -35,3 +35,7 @@ app.use(function(err, req, res, next) {
 });
 
 
+const server = http.createServer(app);
+server.listen(5001, () => {
+  console.log('Server is running on port 5001');
+});

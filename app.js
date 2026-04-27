@@ -4,11 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const http = require('http');
-const { connectToMongoDB } = require('./config/mongo.connection');
+const { DB } = require('./config/mongo.connection');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 require('dotenv').config();
+
 var app = express();
 
 app.use(logger('dev'));
@@ -17,13 +18,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/index', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -38,7 +40,7 @@ app.use(function(err, req, res, next) {
 
 
 const server = http.createServer(app);
-server.listen(process.env.Port, () => {
-   connectToMongoDB();
-  console.log(`Server is running on port ${process.env.Port}`);
+server.listen( process.env.Port, () => {
+   DB();
+  console.log(`Server is running on port ${ process.env.Port }`);
 });

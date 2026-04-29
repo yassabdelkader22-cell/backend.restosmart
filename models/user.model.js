@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     phone: String,
     avatar: String,
     coverImage: String,
+    profileImage: String,
     location: String,
     bio: String,
     role: { 

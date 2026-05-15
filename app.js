@@ -5,9 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const http = require('http');
 const { DB } = require('./config/mongo.connection');
+const fileUpload = require('express-fileupload');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth.routes');
+var qrRouter = require('./routes/qr');
+var managerRouter = require('./routes/manager.routes');
 require('dotenv').config();
 
 var app = express();
@@ -16,16 +20,17 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/index', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/qr', qrRouter);
+app.use('/auth', authRouter);
+app.use('/manager', managerRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
 
 // error handler
 app.use(function(err, req, res, next) {

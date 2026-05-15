@@ -11,7 +11,7 @@ const managerSchema = new mongoose.Schema({
     workTime: String,
     
     // العلاقات
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner', required: true }, // ✅ المالك الذي عينه
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }, // ✅ المالك الذي عينه
     restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' },
     groupes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Groupe' }],
     employes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Worker' }],

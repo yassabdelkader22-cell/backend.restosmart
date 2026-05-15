@@ -18,7 +18,7 @@ const workerSchema = new mongoose.Schema({
     workSchedule: String,
 
     // العلاقات
-    restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
+    restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', },
     manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager' },
     groupe: { type: mongoose.Schema.Types.ObjectId, ref: 'Groupe' },
     commandes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Commande' }],

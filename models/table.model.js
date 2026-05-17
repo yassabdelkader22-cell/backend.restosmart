@@ -12,7 +12,7 @@ const tableSchema = new mongoose.Schema({
         default: 'libre' 
     },
     
-    groupe: { type: mongoose.Schema.Types.ObjectId, ref: 'Groupe', required: true },
+    groupe: { type: mongoose.Schema.Types.ObjectId, ref: 'Groupe'},
     manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager', required: true },
     employe: { type: mongoose.Schema.Types.ObjectId, ref: 'Worker' },
     clientActuel: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Client' }],
@@ -31,7 +31,7 @@ tableSchema.pre('save', function(next) {
         const uniqueString = crypto.randomBytes(8).toString('hex');
         this.qrCode = `TABLE-${this.numero}-${uniqueString}`;
     }
-    next();
+    
 });
 
 module.exports = mongoose.model('Table', tableSchema);

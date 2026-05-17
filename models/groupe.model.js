@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const groupeSchema = new mongoose.Schema({
     nomgroupe: { type: String, required: true },
     description: String,
-    startNumber: { type: Number, required: true },
-    endNumber: { type: Number, required: true },
+    startNumber: { type: Number },
+    endNumber: { type: Number},
     
     restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
     employe: { type: mongoose.Schema.Types.ObjectId, ref: 'Worker' },

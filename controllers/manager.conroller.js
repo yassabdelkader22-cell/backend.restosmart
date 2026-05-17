@@ -1,5 +1,6 @@
 const Restaurant = require('../models/restaurant.model');
 const Manager = require('../models/manager.model');
+const Product = require('../models/produit.model');
 const fs = require('fs');
 const path = require('path');
 
@@ -81,6 +82,96 @@ exports.getRestaurantByManagerId = async (req, res) => {
         }
 
         res.status(200).json(restaurant);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+// ==================== ADD PRODUCT ====================
+exports.addProduct = async (req, res) => {
+    try {
+        const { restaurantId } = req.params;
+        const { name, prix, description, image, categorie, sousCategorie } = req.body;
+
+        const restaurant = await Restaurant.findById(restaurantId);
+        if (!restaurant) {
+            return res.status(404).json({ message: 'Restaurant non trouvé' });
+        }
+
+        const product = new Product({
+            name,
+            prix,
+            description,
+            image,
+            categorie,
+            sousCategorie,
+            restaurant: restaurantId
+        });
+
+        await product.save();
+
+        restaurant.products.push(product._id);
+        await restaurant.save();
+
+        res.status(201).json({
+            message: 'Produit ajouté avec succès',
+            product
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// ==================== UPDATE PRODUCT ====================
+exports.updateProduct = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const { name, prix, description, image, categorie, sousCategorie, isAvailable } = req.body;
+
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Produit non trouvé' });
+        }
+
+        if (name) product.name = name;
+        if (prix) product.prix = prix;
+        if (description) product.description = description;
+        if (image) product.image = image;
+        if (categorie) product.categorie = categorie;
+        if (sousCategorie) product.sousCategorie = sousCategorie;
+        if (isAvailable !== undefined) product.isAvailable = isAvailable;
+
+        await product.save();
+
+        res.status(200).json({
+            message: 'Produit modifié avec succès',
+            product
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// ==================== DELETE PRODUCT ====================
+exports.deleteProduct = async (req, res) => {
+    try {
+        const { productId } = req.params;
+
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Produit non trouvé' });
+        }
+
+        // حذف المنتج من الـ Restaurant
+        await Restaurant.updateOne(
+            { products: productId },
+            { $pull: { products: productId } }
+        );
+
+        await Product.findByIdAndDelete(productId);
+
+        res.status(200).json({
+            message: 'Produit supprimé avec succès'
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

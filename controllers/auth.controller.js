@@ -5,6 +5,7 @@ const Worker = require('../models/employe.model');
 const path = require('path');
 const fs = require('fs');
 const Restaurant = require('../models/restaurant.model'); // ✅ أضف هذا
+const Category = require('../models/category.model'); // ✅ أضف هذا
 const bcrypt = require('bcrypt');
 
 // ==================== REGISTER ====================
@@ -50,6 +51,16 @@ module.exports.register = async (req, res) => {
             });
             await newRestaurant.save();
             
+            // ✅ إنشاء التصنيفات الأربعة تلقائياً للمطعم الجديد
+            const categoriesData = [
+                { name: 'Plats', categorie: 'plat', icon: '🍽️', restaurant: newRestaurant._id },
+                { name: 'Boissons', categorie: 'boisson', icon: '🥤', restaurant: newRestaurant._id },
+                { name: 'Chicha', categorie: 'chicha', icon: '💨', restaurant: newRestaurant._id },
+                { name: 'Desserts', categorie: 'dessert', icon: '🍰', restaurant: newRestaurant._id }
+            ];
+            await Category.insertMany(categoriesData);
+            
+            // ربط المطعم بالمدير
             profile.restaurant = newRestaurant._id;
             await profile.save();
         }

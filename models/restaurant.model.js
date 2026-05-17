@@ -16,7 +16,7 @@ const restaurantSchema = new mongoose.Schema({
     location: String,
     
     // العلاقات
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner', required: true },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner',  },
     manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager' },
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Produit' }],
     tables: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Table' }],

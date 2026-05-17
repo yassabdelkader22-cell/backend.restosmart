@@ -12,6 +12,11 @@ var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth.routes');
 var qrRouter = require('./routes/qr');
 var managerRouter = require('./routes/manager.routes');
+var restaurantRouter = require('./routes/restaurant.routes');
+var productRoutes = require('./routes/produit.routes');
+var categoryRoutes = require('./routes/category.routes');
+var tableRoutes = require('./routes/table.routes');
+var groupeRoutes = require('./routes/groupe.routes');
 require('dotenv').config();
 
 var app = express();
@@ -27,10 +32,16 @@ app.use('/users', usersRouter);
 app.use('/qr', qrRouter);
 app.use('/auth', authRouter);
 app.use('/manager', managerRouter);
+app.use('/api', restaurantRouter);
+app.use('/api', productRoutes);
+app.use('/api', categoryRoutes);
+app.use('/api', tableRoutes);
+app.use('/api', groupeRoutes);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {
